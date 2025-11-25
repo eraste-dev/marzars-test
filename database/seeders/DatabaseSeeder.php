@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call([
+            UserSeeder::class,
+        ]);
+
         // Admin user
         User::firstOrCreate(
             ['email' => 'admin@example.com'],
@@ -40,11 +44,11 @@ class DatabaseSeeder extends Seeder
 
         $rooms = [
             ['name' => 'Salle Alpha', 'description' => 'Salle de réunion principale'],
-            ['name' => 'Salle Beta', 'description' => 'Espace collaboratif'],
-            ['name' => 'Salle Gamma', 'description' => 'Salle de formation'],
-            ['name' => 'Salle Delta', 'description' => 'Espace détente'],
-            ['name' => 'Salle Epsilon', 'description' => 'Bureau partagé'],
-            ['name' => 'Salle Zeta', 'description' => 'Salle de conférence'],
+            // ['name' => 'Salle Beta', 'description' => 'Espace collaboratif'],
+            // ['name' => 'Salle Gamma', 'description' => 'Salle de formation'],
+            // ['name' => 'Salle Delta', 'description' => 'Espace détente'],
+            // ['name' => 'Salle Epsilon', 'description' => 'Bureau partagé'],
+            // ['name' => 'Salle Zeta', 'description' => 'Salle de conférence'],
         ];
 
         foreach ($rooms as $room) {

@@ -13,7 +13,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CalendarDays, DoorOpen, Home, LayoutGrid, Users } from 'lucide-react';
+import { CalendarDays, DoorOpen, Home, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const footerNavItems: NavItem[] = [];
@@ -28,11 +28,11 @@ export function AppSidebar() {
             href: '/',
             icon: Home,
         },
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-            icon: LayoutGrid,
-        },
+        // {
+        //     title: 'Dashboard',
+        //     href: dashboard(),
+        //     icon: LayoutGrid,
+        // },
         {
             title: 'Mes réservations',
             href: '/dashboard/reservations',
