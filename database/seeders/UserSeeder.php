@@ -38,23 +38,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $rooms = [
-            ['name' => 'Salle Alpha', 'description' => 'Salle de réunion principale'],
-            ['name' => 'Salle Beta', 'description' => 'Espace collaboratif'],
-            ['name' => 'Salle Gamma', 'description' => 'Salle de formation'],
-            ['name' => 'Salle Delta', 'description' => 'Espace détente'],
-            ['name' => 'Salle Epsilon', 'description' => 'Bureau partagé'],
-            ['name' => 'Salle Zeta', 'description' => 'Salle de conférence'],
-        ];
-
-        foreach ($rooms as $room) {
-            Room::firstOrCreate(
-                ['name' => $room['name']],
-                [
-                    'description' => $room['description'],
-                    'capacity' => 4,
-                ]
-            );
-        }
+        User::factory(10)->create();
     }
 }
