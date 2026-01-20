@@ -44,4 +44,26 @@ class UserReservationController extends Controller
             'availableRooms' => $availableRooms,
         ]);
     }
+    public function history(): Response
+    {
+        $reservations = auth()->user()
+            ->reservations()
+            ->with('room')
+            ->latest()
+            ->get()
+            ->map(function ($reservation) {
+                return [
+                    'id' => $reservation->id,
+                    'room_name' => $reservation->room->name,
+                    'room_description' => $reservation->room->description,
+                    'created_at' => $reservation->created_at->format('d/m/Y H:i'),
+                    'date' => $reservation->created_at->format('d/m/Y'),
+                    'time' => $reservation->created_at->format('H:i'),
+                ];
+            });
+
+        return Inertia::render('dashboard/history', [
+            'reservations' => $reservations,
+        ]);
+    }
 }

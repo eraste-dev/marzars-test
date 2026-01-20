@@ -36,6 +36,15 @@ export const NavMenu = (props: ComponentProps<typeof NavigationMenu>) => {
                             </NavigationMenuLink>
                         </NavigationMenuItem>
 
+                        <NavigationMenuItem>
+                            <NavigationMenuLink
+                                asChild
+                                className={navigationMenuTriggerStyle()}
+                            >
+                                <Link href="/dashboard/history">Historique</Link>
+                            </NavigationMenuLink>
+                        </NavigationMenuItem>
+
                         {isAdmin && (
                             <>
                                 <NavigationMenuItem>

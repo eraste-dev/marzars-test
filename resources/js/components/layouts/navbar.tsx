@@ -9,7 +9,7 @@ const Navbar = () => {
     const { auth } = usePage<SharedData>().props;
 
     return (
-        <nav className="h-16 border-b bg-background">
+        <nav className="sticky top-0 z-50 h-16 border-b bg-background/95 backdrop-blur-sm shadow-sm">
             <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-12">
                     <Link href="/">
@@ -28,6 +28,11 @@ const Navbar = () => {
                             </span>
                             <Button asChild>
                                 <Link href="/dashboard">Dashboard</Link>
+                            </Button>
+                            <Button variant="ghost" asChild>
+                                <Link href="/logout" method="post" as="button">
+                                    Déconnexion
+                                </Link>
                             </Button>
                         </>
                     ) : (

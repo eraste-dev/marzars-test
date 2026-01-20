@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // User reservations
     Route::get('/dashboard/reservations', [UserReservationController::class, 'index'])->name('user.reservations');
+    Route::get('/dashboard/history', [UserReservationController::class, 'history'])->name('user.history');
 
     // Admin routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
