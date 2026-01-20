@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Room;
-use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,47 +18,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+            RoomSeeder::class,
         ]);
-
-        // Admin user
-        User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin',
-                'password' => 'password',
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]
-        );
-
-        // Regular user
-        User::firstOrCreate(
-            ['email' => 'user@example.com'],
-            [
-                'name' => 'Utilisateur',
-                'password' => 'password',
-                'role' => 'user',
-                'email_verified_at' => now(),
-            ]
-        );
-
-        $rooms = [
-            ['name' => 'Salle Alpha', 'description' => 'Salle de réunion principale'],
-            // ['name' => 'Salle Beta', 'description' => 'Espace collaboratif'],
-            // ['name' => 'Salle Gamma', 'description' => 'Salle de formation'],
-            // ['name' => 'Salle Delta', 'description' => 'Espace détente'],
-            // ['name' => 'Salle Epsilon', 'description' => 'Bureau partagé'],
-            // ['name' => 'Salle Zeta', 'description' => 'Salle de conférence'],
-        ];
-
-        foreach ($rooms as $room) {
-            Room::firstOrCreate(
-                ['name' => $room['name']],
-                [
-                    'description' => $room['description'],
-                    'capacity' => 4,
-                ]
-            );
-        }
     }
 }
