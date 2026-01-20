@@ -3,6 +3,14 @@ import { RoomCard } from '@/components/room-card';
 import { type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
+interface Reservation {
+    id: number;
+    user: {
+        name: string;
+        email: string;
+    };
+}
+
 interface Room {
     id: number;
     name: string;
@@ -11,6 +19,7 @@ interface Room {
     reservations_count: number;
     available_spots: number;
     is_full: boolean;
+    reservations: Reservation[];
 }
 
 interface WelcomeProps {

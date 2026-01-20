@@ -10,17 +10,29 @@ class RoomController extends Controller
 {
     public function index(): Response
     {
-        $rooms = Room::withCount('reservations')->get()->map(function ($room) {
-            return [
-                'id' => $room->id,
-                'name' => $room->name,
-                'description' => $room->description,
-                'capacity' => $room->capacity,
-                'reservations_count' => $room->reservations_count,
-                'available_spots' => $room->capacity - $room->reservations_count,
-                'is_full' => $room->reservations_count >= $room->capacity,
-            ];
-        });
+        $rooms = Room::withCount('reservations')
+            ->with('reservations.user')
+            ->get()
+            ->map(function ($room) {
+                return [
+                    'id' => $room->id,
+                    'name' => $room->name,
+                    'description' => $room->description,
+                    'capacity' => $room->capacity,
+                    'reservations_count' => $room->reservations_count,
+                    'available_spots' => $room->capacity - $room->reservations_count,
+                    'is_full' => $room->reservations_count >= $room->capacity,
+                    'reservations' => $room->reservations->map(function ($res) {
+                        return [
+                            'id' => $res->id,
+                            'user' => [
+                                'name' => $res->user->name,
+                                'email' => $res->user->email,
+                            ],
+                        ];
+                    }),
+                ];
+            });
 
         $userReservations = [];
         if (auth()->check()) {
