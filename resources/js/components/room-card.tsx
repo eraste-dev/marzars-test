@@ -46,23 +46,37 @@ export function RoomCard({ room, hasReservation, isAuthenticated }: RoomCardProp
     const filledSpots = room.reservations_count;
 
     return (
-        <Card className="w-full">
-            <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                    <span>{room.name}</span>
-                    <span className="flex items-center gap-1 text-sm font-normal text-muted-foreground">
-                        <Users className="h-4 w-4" />
-                        {room.available_spots}/{room.capacity}
-                    </span>
-                </CardTitle>
-                {room.description && (
-                    <p className="text-sm text-muted-foreground">{room.description}</p>
-                )}
+        <Card className="group relative overflow-hidden border-sidebar-border/50 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5">
+            <CardHeader className="pb-4">
+                <div className="flex items-start justify-between">
+                    <div className="space-y-1">
+                        <CardTitle className="text-xl font-bold tracking-tight">
+                            {room.name}
+                        </CardTitle>
+                        {room.description && (
+                            <p className="line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+                                {room.description}
+                            </p>
+                        )}
+                    </div>
+                </div>
             </CardHeader>
 
-            <CardContent>
-                <TooltipProvider>
-                    <div className="flex justify-center gap-2">
+            <CardContent className="pb-6">
+                <div className="mb-4 flex items-center justify-between">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        Occupation
+                    </span>
+                    <span className={cn(
+                        "text-sm font-semibold px-3 py-1 rounded-full",
+                        room.is_full ? "bg-destructive/15 text-destructive" : "bg-primary/15 text-primary"
+                    )}>
+                        {room.reservations_count} / {room.capacity}
+                    </span>
+                </div>
+
+                <TooltipProvider delayDuration={0}>
+                    <div className="flex flex-wrap gap-2">
                         {spotsArray.map((index) => {
                             const reservation = room.reservations[index];
                             const isOccupied = index < filledSpots;
@@ -72,20 +86,20 @@ export function RoomCard({ room, hasReservation, isAuthenticated }: RoomCardProp
                                     <TooltipTrigger asChild>
                                         <div
                                             className={cn(
-                                                'h-10 w-10 gap-2 rounded-full border-2 flex items-center justify-center transition-colors',
+                                                'h-9 w-9 rounded-xl border flex items-center justify-center transition-all duration-200',
                                                 isOccupied
-                                                    ? 'bg-primary border-primary text-primary-foreground'
-                                                    : 'border-muted-foreground/30 bg-muted/30'
+                                                    ? 'bg-primary border-primary text-primary-foreground shadow-sm'
+                                                    : 'border-muted-foreground/40 bg-muted/10 text-muted-foreground/60'
                                             )}
                                         >
-                                            <Users className="h-5 w-5" />
+                                            <Users className={cn("h-4 w-4", isOccupied ? "opacity-100" : "opacity-70")} />
                                         </div>
                                     </TooltipTrigger>
                                     {isOccupied && reservation && (
-                                        <TooltipContent side="top" className="px-3 py-2">
-                                            <div className="flex flex-col gap-1">
-                                                <p className="text-sm font-bold">{reservation.user.name}</p>
-                                                <p className="text-xs opacity-90">{reservation.user.email}</p>
+                                        <TooltipContent side="top" className="bg-slate-900 text-slate-50 border-none shadow-xl px-3 py-1.5 uppercase tracking-wider">
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] font-bold text-slate-400">Réservé par</span>
+                                                <span className="text-sm font-semibold">{reservation.user.name}</span>
                                             </div>
                                         </TooltipContent>
                                     )}
@@ -94,35 +108,43 @@ export function RoomCard({ room, hasReservation, isAuthenticated }: RoomCardProp
                         })}
                     </div>
                 </TooltipProvider>
-                {room.is_full && (
-                    <p className="mt-3 text-center text-sm text-destructive font-medium">
-                        Salle complète
-                    </p>
-                )}
             </CardContent>
 
-            <CardFooter className="justify-center">
+            <CardFooter className="pt-0">
                 {!isAuthenticated ? (
-                    <Button variant="outline" asChild>
-                        <a href="/login">Connectez-vous pour réserver</a>
+                    <Button variant="secondary" className="w-full text-white" asChild>
+                        <a href="/login">Se connecter</a>
                     </Button>
                 ) : hasReservation ? (
                     <Button
                         variant="destructive"
+                        className="w-full transition-all hover:bg-destructive/90"
                         onClick={handleCancel}
                         disabled={cancelForm.processing}
                     >
-                        {cancelForm.processing ? 'Annulation...' : 'Annuler ma réservation'}
+                        {cancelForm.processing ? 'Annulation...' : 'Annuler'}
                     </Button>
                 ) : (
                     <Button
+                        className="w-full transition-all"
                         onClick={handleReserve}
                         disabled={room.is_full || reserveForm.processing}
                     >
-                        {reserveForm.processing ? 'Réservation...' : 'Réserver une place'}
+                        {reserveForm.processing ? 'Réservation...' : 'Réserver'}
                     </Button>
                 )}
             </CardFooter>
+
+            {/* Subtle Progress Bar at the absolute bottom */}
+            <div className="absolute bottom-0 left-0 h-1 bg-muted w-full">
+                <div 
+                    className={cn(
+                        "h-full transition-all duration-500",
+                        room.is_full ? "bg-destructive" : "bg-primary"
+                    )}
+                    style={{ width: `${(room.reservations_count / room.capacity) * 100}%` }}
+                />
+            </div>
         </Card>
     );
 }
